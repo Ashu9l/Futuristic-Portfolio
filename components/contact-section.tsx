@@ -10,6 +10,12 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Mic, Send, Wand2 } from 'lucide-react'
 
+declare global {
+  interface Window {
+    webkitSpeechRecognition: typeof SpeechRecognition
+  }
+}
+
 function Avatar() {
   return (
     <>
@@ -28,38 +34,45 @@ export default function ContactSection() {
   const [isListening, setIsListening] = useState(false)
   const [transcript, setTranscript] = useState('')
   const [audioData, setAudioData] = useState<number[]>([])
-  
+
   useEffect(() => {
-    if (!isListening) return
-    
-    let recognition: SpeechRecognition
-    
+    if (!isListening || typeof window === 'undefined') return
+
+    let recognition: SpeechRecognition | null = null
+
     try {
-      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+      recognition = new SpeechRecognition()
       recognition.continuous = true
       recognition.interimResults = true
-      
-      recognition.onresult = (event) => {
-        const last = event.results.length - 1
-        setTranscript(event.results[last][0].transcript)
+
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
+        const results = event.results
+        const last = results.length - 1
+        setTranscript(results[last][0].transcript)
       }
-      
+
+      recognition.onerror = () => {
+        setIsListening(false)
+      }
+
       recognition.start()
     } catch (error) {
       console.error('Speech recognition not supported')
+      setIsListening(false)
     }
-    
+
     // Simulate audio visualization data
     const interval = setInterval(() => {
       setAudioData(Array.from({ length: 20 }, () => Math.random()))
     }, 100)
-    
+
     return () => {
       recognition?.stop()
       clearInterval(interval)
     }
   }, [isListening])
-  
+
   return (
     <section className="min-h-screen py-20 relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4">
@@ -92,7 +105,7 @@ export default function ContactSection() {
                 <div className="relative">
                   <Textarea
                     placeholder="Your Message"
-                    value={transcript || ''}
+                    value={transcript}
                     onChange={(e) => setTranscript(e.target.value)}
                     className="glass-card border-cyan-500/20 focus:border-cyan-500 min-h-[150px]"
                   />
@@ -101,8 +114,9 @@ export default function ContactSection() {
                     variant="ghost"
                     className="absolute bottom-2 right-2 text-cyan-400 hover:text-cyan-300"
                     onClick={() => setIsListening(!isListening)}
+                    type="button"
                   >
-                    <Mic className={`w-5 h-5 ${isListening ? 'text-red-500' : ''}`} />
+                    <Mic className={`w-5 h-5 ${isListening ? 'text-red-500 animate-pulse' : ''}`} />
                   </Button>
                 </div>
                 
@@ -111,7 +125,7 @@ export default function ContactSection() {
                     {audioData.map((value, index) => (
                       <motion.div
                         key={index}
-                        className="w-1 bg-cyan-400"
+                        className="w-1 bg-cyan-400 rounded-full"
                         animate={{ height: `${value * 32}px` }}
                         transition={{ duration: 0.1 }}
                       />
