@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 20;
+  --background-end-rgb: 0, 0, 40;
+  --neon-primary: 0, 255, 255;
+  --neon-secondary: 255, 0, 255;
+  --neon-accent: 255, 255, 0;
+}
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 180 100% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 300 100% 50%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 10% 3.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 60 100% 50%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 10% 3.9%;
+    --input: 240 10% 3.9%;
+    --ring: 240 4.9% 83.9%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background: linear-gradient(
+      to bottom,
+      rgb(var(--background-start-rgb)),
+      rgb(var(--background-end-rgb))
+    );
+  }
+}
+
+.neon-text {
+  text-shadow: 0 0 10px rgba(var(--neon-primary), 0.8),
+               0 0 20px rgba(var(--neon-primary), 0.8),
+               0 0 30px rgba(var(--neon-primary), 0.6),
+               0 0 40px rgba(var(--neon-primary), 0.4);
+}
+
+.neon-border {
+  box-shadow: 0 0 10px rgba(var(--neon-secondary), 0.8),
+              inset 0 0 10px rgba(var(--neon-secondary), 0.8);
+}
+
+.hero-gradient {
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--neon-primary), 0.2) 0%,
+    transparent 70%
+  );
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
