@@ -1,14 +1,16 @@
 "use client"
 
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
+import { OrbitControls, PerspectiveCamera, Line } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
 import { useRef, useState } from 'react'
 
+type Vector3Tuple = [x: number, y: number, z: number]
+
 function NeuralNetwork() {
-  const points = []
-  const connections = []
+  const points: Vector3Tuple[] = []
+  const connections: [Vector3Tuple, Vector3Tuple][] = []
   
   // Create neural network points
   for (let i = 0; i < 50; i++) {
@@ -39,14 +41,20 @@ function NeuralNetwork() {
       {connections.map((connection, i) => {
         const [start, end] = connection
         const points = [
-          new THREE.Vector3(...start),
-          new THREE.Vector3(...end)
+          new THREE.Vector3().fromArray(start),
+          new THREE.Vector3().fromArray(end)
         ]
         const geometry = new THREE.BufferGeometry().setFromPoints(points)
+        
         return (
-          <line key={i} geometry={geometry}>
-            <lineBasicMaterial color="#00ffff" opacity={0.3} transparent />
-          </line>
+          <Line
+            key={i}
+            points={points}
+            color="#00ffff"
+            opacity={0.3}
+            transparent
+            lineWidth={1}
+          />
         )
       })}
     </>

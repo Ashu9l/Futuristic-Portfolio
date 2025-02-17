@@ -38,8 +38,8 @@
     "@radix-ui/react-toggle": "^1.1.0",
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
-    "@react-three/drei": "^9.102.6",
-    "@react-three/fiber": "^8.15.19",
+    "@react-three/drei": "^9.121.5",
+    "@react-three/fiber": "^8.17.14",
     "@tensorflow/tfjs": "^4.17.0",
     "@types/node": "20.6.2",
     "@types/react": "18.2.22",
@@ -75,5 +75,8 @@
     "typescript": "5.2.2",
     "vaul": "^0.9.9",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/dom-speech-recognition": "^0.0.4"
   }
 }
