@@ -26,7 +26,7 @@ export default function Home() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              John Doe
+              Ashu Bind
             </motion.h1>
             <motion.div
               className="flex items-center justify-center gap-2 text-xl text-cyan-400"
